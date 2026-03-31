@@ -1,10 +1,54 @@
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class TrainConsistManagementApp {
 
+    // ===== Bogie Class (for UC7) =====
+    static class Bogie {
+        String name;
+        int capacity;
+
+        Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
+        }
+    }
+
     public static void main(String[] args) {
 
+        // =========================
+        // UC7 - Sort Bogies
+        // =========================
+        System.out.println("======================================");
+        System.out.println("UC7 - Sort Bogies by Capacity");
+        System.out.println("======================================\n");
+
+        List<Bogie> bogies = new ArrayList<>();
+
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("General", 90));
+
+        System.out.println("Before Sorting:");
+        for (Bogie b : bogies) {
+            System.out.println(b.name + " -> " + b.capacity);
+        }
+
+        // Sorting using Comparator
+        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+
+        System.out.println("\nAfter Sorting by Capacity:");
+        for (Bogie b : bogies) {
+            System.out.println(b.name + " -> " + b.capacity);
+        }
+
+        System.out.println("\nUC7 sorting completed...\n");
+
+
+        // =========================
+        // UC11 - Regex Validation
+        // =========================
         System.out.println("==========================================");
         System.out.println("UC11 - Validate Train ID and Cargo Code");
         System.out.println("==========================================\n");
@@ -18,15 +62,14 @@ public class TrainConsistManagementApp {
         System.out.print("Enter Cargo Code (Format: PET-AB): ");
         String cargoCode = scanner.nextLine();
 
-        // ===== REGEX PATTERNS =====
+        // Regex patterns
         String trainRegex = "TRN-\\d{4}";
         String cargoRegex = "PET-[A-Z]{2}";
 
-        // Compile patterns
         Pattern trainPattern = Pattern.compile(trainRegex);
         Pattern cargoPattern = Pattern.compile(cargoRegex);
 
-        // Validate using matches()
+        // Validation
         boolean isTrainValid = trainPattern.matcher(trainId).matches();
         boolean isCargoValid = cargoPattern.matcher(cargoCode).matches();
 
