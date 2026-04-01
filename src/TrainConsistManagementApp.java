@@ -1,83 +1,60 @@
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class TrainConsistManagementApp {
+public class TrainConsistManagementApp  {
 
-    // ===== Bogie Class (for UC7) =====
+    // Bogie model
     static class Bogie {
-        String name;
+        String type;
         int capacity;
 
-        Bogie(String name, int capacity) {
-            this.name = name;
+        Bogie(String type, int capacity) {
+            this.type = type;
             this.capacity = capacity;
         }
     }
 
     public static void main(String[] args) {
 
-        // =========================
-        // UC7 - Sort Bogies
-        // =========================
-        System.out.println("======================================");
-        System.out.println("UC7 - Sort Bogies by Capacity");
-        System.out.println("======================================\n");
+        System.out.println("===============================================");
+        System.out.println("UC13 - Performance Comparison (Loops vs Streams)");
+        System.out.println("===============================================\n");
 
+        // Create large dataset
         List<Bogie> bogies = new ArrayList<>();
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
-
-        System.out.println("Before Sorting:");
-        for (Bogie b : bogies) {
-            System.out.println(b.name + " -> " + b.capacity);
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Type" + i, (i % 100) + 20));
         }
 
-        // Sorting using Comparator
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+        // -------- LOOP APPROACH --------
+        long startLoop = System.nanoTime();
 
-        System.out.println("\nAfter Sorting by Capacity:");
+        List<Bogie> filteredLoop = new ArrayList<>();
         for (Bogie b : bogies) {
-            System.out.println(b.name + " -> " + b.capacity);
+            if (b.capacity > 60) {
+                filteredLoop.add(b);
+            }
         }
 
-        System.out.println("\nUC7 sorting completed...\n");
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
 
+        // -------- STREAM APPROACH --------
+        long startStream = System.nanoTime();
 
-        // =========================
-        // UC11 - Regex Validation
-        // =========================
-        System.out.println("==========================================");
-        System.out.println("UC11 - Validate Train ID and Cargo Code");
-        System.out.println("==========================================\n");
+        List<Bogie> filteredStream = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
 
-        Scanner scanner = new Scanner(System.in);
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
 
-        // Input
-        System.out.print("Enter Train ID (Format: TRN-1234): ");
-        String trainId = scanner.nextLine();
+        // -------- OUTPUT --------
+        System.out.println("Loop Execution Time (ns): " + loopTime);
+        System.out.println("Stream Execution Time (ns): " + streamTime);
 
-        System.out.print("Enter Cargo Code (Format: PET-AB): ");
-        String cargoCode = scanner.nextLine();
-
-        // Regex patterns
-        String trainRegex = "TRN-\\d{4}";
-        String cargoRegex = "PET-[A-Z]{2}";
-
-        Pattern trainPattern = Pattern.compile(trainRegex);
-        Pattern cargoPattern = Pattern.compile(cargoRegex);
-
-        // Validation
-        boolean isTrainValid = trainPattern.matcher(trainId).matches();
-        boolean isCargoValid = cargoPattern.matcher(cargoCode).matches();
-
-        // Output
-        System.out.println("\nValidation Results:");
-        System.out.println("Train ID Valid: " + isTrainValid);
-        System.out.println("Cargo Code Valid: " + isCargoValid);
-
-        System.out.println("\nUC11 validation completed...");
+        System.out.println("\nUC13 performance benchmarking completed...");
     }
 }
