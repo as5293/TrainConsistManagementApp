@@ -3,7 +3,6 @@ import java.util.regex.Pattern;
 
 public class TrainConsistManagementApp {
 
-    // ===== Bogie Class (UC7) =====
     static class Bogie {
         String name;
         int capacity;
@@ -14,41 +13,42 @@ public class TrainConsistManagementApp {
         }
     }
 
+    static class GoodsBogie {
+        String type;
+        String cargo;
+
+        GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
+        }
+    }
+
     public static void main(String[] args) {
 
-        // =========================
-        // UC7 - Sort Bogies
-        // =========================
+        // ================= UC7 =================
         System.out.println("======================================");
         System.out.println("UC7 - Sort Bogies by Capacity");
         System.out.println("======================================\n");
 
         List<Bogie> bogies = new ArrayList<>();
-
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
         bogies.add(new Bogie("General", 90));
 
-        System.out.println("Before Sorting:");
         for (Bogie b : bogies) {
             System.out.println(b.name + " -> " + b.capacity);
         }
 
         bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        System.out.println("\nAfter Sorting by Capacity:");
+        System.out.println("\nAfter Sorting:");
         for (Bogie b : bogies) {
             System.out.println(b.name + " -> " + b.capacity);
         }
 
-        System.out.println("\nUC7 sorting completed...\n");
-
-
-        // =========================
-        // UC11 - Regex Validation
-        // =========================
-        System.out.println("==========================================");
+        // ================= UC11 =================
+        System.out.println("\n==========================================");
         System.out.println("UC11 - Validate Train ID and Cargo Code");
         System.out.println("==========================================\n");
 
@@ -69,10 +69,38 @@ public class TrainConsistManagementApp {
         boolean isTrainValid = trainPattern.matcher(trainId).matches();
         boolean isCargoValid = cargoPattern.matcher(cargoCode).matches();
 
-        System.out.println("\nValidation Results:");
         System.out.println("Train ID Valid: " + isTrainValid);
         System.out.println("Cargo Code Valid: " + isCargoValid);
 
-        System.out.println("\nUC11 validation completed...");
+        // ================= UC12 =================
+        System.out.println("\n==============================================");
+        System.out.println("UC12 - Safety Compliance Check for Goods Bogies");
+        System.out.println("==============================================\n");
+
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
+
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Open", "Coal"));
+        goodsBogies.add(new GoodsBogie("Box", "Grain"));
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Coal"));
+
+        for (GoodsBogie g : goodsBogies) {
+            System.out.println(g.type + " -> " + g.cargo);
+        }
+
+        boolean isSafe = goodsBogies.stream().allMatch(g ->
+                !g.type.equalsIgnoreCase("Cylindrical") ||
+                g.cargo.equalsIgnoreCase("Petroleum")
+        );
+
+        System.out.println("\nSafety Compliance Status: " + isSafe);
+
+        if (isSafe) {
+            System.out.println("Train formation is SAFE.");
+        } else {
+            System.out.println("Train formation is NOT SAFE.");
+        }
+
+        System.out.println("\nExecution completed...");
     }
 }
