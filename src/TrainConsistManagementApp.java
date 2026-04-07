@@ -3,37 +3,27 @@ public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
         System.out.println("======================================");
-        System.out.println("UC16 - Manual Sorting using Bubble Sort");
+        System.out.println("UC17 - Sort Bogie Names using Arrays.sort()");
         System.out.println("======================================\n");
 
-        // Create array of capacities
-        int[] capacities = {72, 56, 24, 70, 60};
+        // Create array of bogie names
+        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
 
-        // Display original values
-        System.out.println("Original Capacities:");
-        for (int c : capacities) {
-            System.out.print(c + " ");
+        // Display original array
+        System.out.println("Original Bogie Names:");
+        for (String name : bogieNames) {
+            System.out.print(name + " ");
         }
 
-        // Bubble Sort Logic
-        for (int i = 0; i < capacities.length - 1; i++) {
-            for (int j = 0; j < capacities.length - i - 1; j++) {
+        // Sorting using Arrays.sort()
+        java.util.Arrays.sort(bogieNames);
 
-                if (capacities[j] > capacities[j + 1]) {
-                    // swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
-            }
+        // Display sorted array
+        System.out.println("\n\nSorted Bogie Names (Alphabetical):");
+        for (String name : bogieNames) {
+            System.out.print(name + " ");
         }
 
-        // Display sorted values
-        System.out.println("\n\nSorted Capacities (Ascending):");
-        for (int c : capacities) {
-            System.out.print(c + " ");
-        }
-
-        System.out.println("\n\nUC16 sorting completed...");
+        System.out.println("\n\nUC17 sorting completed...");
     }
 }
